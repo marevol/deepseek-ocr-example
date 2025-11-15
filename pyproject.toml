@@ -1,0 +1,93 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "deepseek-ocr-example"
+version = "0.1.0"
+description = "DeepSeek-OCR command-line tool using vLLM for high-performance OCR"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "Shinsuke Sugaya" }
+]
+keywords = ["ocr", "deepseek", "vllm", "vision-language-model", "document-parsing"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "torch>=2.6.0",
+    "transformers>=4.46.3",
+    "tokenizers>=0.20.3",
+    "vllm>=0.7.0",  # Will be installed from nightly index (see [tool.uv.sources])
+    "einops>=0.8.0",
+    "addict>=2.4.0",
+    "easydict>=1.13",
+    "pillow>=10.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+]
+
+# Optional: Install for better performance (requires compilation)
+flash = [
+    "flash-attn>=2.7.0",
+    "ninja>=1.11.0",
+    "packaging>=23.0",
+]
+
+[tool.uv]
+# vLLM nightly build from custom index
+index-url = "https://pypi.org/simple"
+extra-index-url = ["https://wheels.vllm.ai/nightly"]
+
+# Build dependencies for flash-attn (if installed)
+extra-build-dependencies.flash-attn = [
+    "psutil>=5.9.0",
+    "ninja>=1.11.0",
+    "packaging>=23.0",
+]
+
+[project.scripts]
+ocr = "deepseek_ocr_example.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/codelibs/deepseek-ocr-example"
+Repository = "https://github.com/codelibs/deepseek-ocr-example"
+Documentation = "https://github.com/codelibs/deepseek-ocr-example/blob/main/README.md"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--cov=deepseek_ocr_example",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["*/tests/*", "*/__pycache__/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
