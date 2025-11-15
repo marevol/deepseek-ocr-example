@@ -7,18 +7,6 @@ A high-performance command-line OCR tool using [DeepSeek-OCR](https://github.com
 
 > **🚀 New to this project?** Check out the [Quick Start Guide](QUICKSTART.md) for a step-by-step walkthrough!
 
-## ✨ Recent Improvements
-
-**Massive accuracy boost for charts and figures!** By optimizing prompts and implementing grounding support:
-
-- 🎯 **14× better text detection** on complex diagrams (350 → 5,027 characters)
-- 📦 **20× more elements detected** (4 → 80 elements on test images)
-- 🎨 **Automatic visualization** with bounding boxes for all detected text
-- ⚙️ **Custom prompt support** to optimize for different content types
-- 🔄 **EXIF orientation handling** for camera photos
-
-See the [Performance](#performance) section for detailed benchmarks.
-
 ## Features
 
 - **High Performance**: Powered by vLLM for fast batch inference (~2500 tokens/s on A100)
@@ -102,7 +90,7 @@ uv run ocr simple.jpg output.txt --format text --prompt "Free OCR."
 uv run ocr diagram.png output.json --prompt "Parse the figure."
 ```
 
-💡 **Tip**: The prompt `<|grounding|>OCR this image.` typically achieves **10-20× better detection** for charts and figures compared to the default document prompt!
+💡 **Tip**: Different prompts work better for different content types. Experiment to find the best one for your use case.
 
 ### Resolution Modes
 
@@ -281,18 +269,7 @@ This is the extracted text...
 - **Processing Speed**: ~2500 tokens/s on A100-40G, ~220 tokens/s on RTX 5060 Ti
 - **Memory Usage**: 10-15GB VRAM depending on resolution mode
 - **Compression Ratio**: Up to 10× with 97%+ accuracy
-- **Detection Accuracy**: 10-20× improvement for charts/figures with optimized prompts
 - **Supported Languages**: ~100 languages
-
-### Prompt Impact on Detection (Example: fig1.png)
-
-| Prompt | Characters Detected | Elements | Compression |
-|--------|-------------------|----------|-------------|
-| `Convert the document to markdown.` | 350 | 4 | 1.37× |
-| `Free OCR.` | 2,226 | - | - |
-| **`<|grounding|>OCR this image.`** | **5,027** | **80** | **9.87×** |
-
-💡 **Key Insight**: Using the right prompt can improve detection by **14× or more** for complex figures!
 
 ### Compression Ratios vs Accuracy
 
@@ -307,8 +284,9 @@ This is the extracted text...
 
 See the `docs/` directory for detailed documentation:
 
-- [model-info.md](docs/model-info.md) - Detailed model information and architecture
-- [vllm-setup.md](docs/vllm-setup.md) - vLLM configuration and optimization guide
+- [model-architecture.md](docs/model-architecture.md) - Detailed model information and architecture
+- [vllm-guide.md](docs/vllm-guide.md) - vLLM configuration and optimization guide
+- [installation.md](docs/installation.md) - Detailed installation instructions
 
 ## Troubleshooting
 
